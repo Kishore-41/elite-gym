@@ -1,12 +1,18 @@
 import axios from 'axios';
 
+// Environment-Based API Configuration
+const RAW_API_URL = import.meta.env.VITE_API_URL || '';
+export const API_BASE_URL = RAW_API_URL
+  ? (RAW_API_URL.endsWith('/api/v1') ? RAW_API_URL : `${RAW_API_URL.replace(/\/+$/, '')}/api/v1`)
+  : '/api/v1';
+
 // Create configured Axios instance
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 15000,
 });
 
 // Request Interceptor: Attach JWT token if available
@@ -26,7 +32,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Future Phase 2: Redirect to login on token expiration
+      // Token expired or invalid authorization
     }
     return Promise.reject(error);
   }

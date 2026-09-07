@@ -37,7 +37,7 @@ public class MembershipPlan {
     private BigDecimal price;
 
     @Convert(converter = JsonListConverter.class)
-    @Column(nullable = false, columnDefinition = "json")
+    @Column(nullable = false, columnDefinition = "TEXT")
     @Builder.Default
     private List<String> features = new ArrayList<>();
 

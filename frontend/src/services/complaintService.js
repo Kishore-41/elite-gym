@@ -1,4 +1,4 @@
-﻿import api from './api';
+import api from './api';
 
 export const complaintService = {
   // Student operations
@@ -35,6 +35,24 @@ export const complaintService = {
   getStudentComplaints: async (studentId, status) => {
     const params = status ? { status } : {};
     const response = await api.get('/admin/students/' + studentId + '/complaints', { params });
+    return response.data;
+  },
+
+  // Public & Member Grievance Redressal
+  uploadEvidence: async (formData) => {
+    const response = await api.post('/complaints/upload-evidence', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+
+  submitGrievance: async (payload) => {
+    const response = await api.post('/complaints', payload);
+    return response.data;
+  },
+
+  trackGrievance: async (complaintId) => {
+    const response = await api.get('/complaints/track/' + complaintId);
     return response.data;
   },
 

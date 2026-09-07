@@ -83,6 +83,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(UpgradeRequiredException.class)
+    public ResponseEntity<Map<String, Object>> handleUpgradeRequiredException(
+            UpgradeRequiredException ex, HttpServletRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("upgradeRequired", true);
+        body.put("message", ex.getMessage());
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(
             AccessDeniedException ex, HttpServletRequest request) {

@@ -17,4 +17,5 @@ public class ComplaintResponseRequest {
     private ComplaintStatus status;
 
     private String adminResponse;
+    private String resolutionNotes;
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface StudentMembershipRepository extends JpaRepository<StudentMembership, Long> {
@@ -36,4 +35,8 @@ public interface StudentMembershipRepository extends JpaRepository<StudentMember
 
     Boolean existsByStudentIdAndStatusAndEndDateGreaterThanEqual(
             Long studentId, MembershipStatus status, LocalDate date);
+
+    List<StudentMembership> findByStudentIdAndStatus(Long studentId, MembershipStatus status);
+
+    List<StudentMembership> findByStudentId(Long studentId);
 }

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaLock, FaSignInAlt, FaArrowLeft, FaUserGraduate, FaDumbbell, FaExclamationCircle } from 'react-icons/fa';
+import { 
+  FaLock, FaSignInAlt, FaArrowLeft, FaUserGraduate, FaDumbbell, 
+  FaExclamationCircle, FaUserCheck, FaTimes, FaArrowRight, FaIdCard 
+} from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 
 const LoginPage = () => {
@@ -16,6 +19,7 @@ const LoginPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showRoleModal, setShowRoleModal] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -73,21 +77,23 @@ const LoginPage = () => {
             width: '54px',
             height: '54px',
             borderRadius: '14px',
-            background: 'linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(255, 107, 0, 0.05))',
-            color: 'var(--accent-orange)',
+            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.1))',
+            color: '#F59E0B',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '1.5rem',
             marginBottom: '1rem',
-            border: '1px solid rgba(255, 107, 0, 0.3)',
-            boxShadow: 'var(--shadow-glow)',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+            boxShadow: '0 0 20px rgba(245, 158, 11, 0.25)',
           }}>
             <FaLock />
           </div>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Welcome Back</h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Sign in to access your Elite Gym dashboard
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.4rem', color: '#F3F4F6' }}>
+            Member & Staff Login
+          </h2>
+          <p style={{ color: '#9CA3AF', fontSize: '0.88rem' }}>
+            Enter credentials to access Elite Athletic Club portal
           </p>
         </div>
 
@@ -97,10 +103,10 @@ const LoginPage = () => {
             animate={{ opacity: 1, y: 0 }}
             style={{
               padding: '0.75rem 1rem',
-              borderRadius: 'var(--radius-md)',
-              background: 'rgba(255, 23, 68, 0.12)',
-              border: '1px solid rgba(255, 23, 68, 0.3)',
-              color: 'var(--accent-red)',
+              borderRadius: '8px',
+              background: 'rgba(239, 68, 68, 0.15)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              color: '#EF4444',
               fontSize: '0.875rem',
               display: 'flex',
               alignItems: 'center',
@@ -115,7 +121,7 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem', color: '#D1D5DB' }}>
               Username or Email
             </label>
             <input
@@ -123,23 +129,23 @@ const LoginPage = () => {
               name="usernameOrEmail"
               value={formData.usernameOrEmail}
               onChange={handleChange}
-              placeholder="e.g. user@elitegym.com or alex_fit"
+              placeholder="e.g. member@elitegym.in or alex_fit"
               style={{
                 width: '100%',
                 padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid var(--border-glass)',
-                color: 'var(--text-primary)',
+                borderRadius: '8px',
+                background: '#0A0A0E',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#fff',
                 outline: 'none',
-                transition: 'border-color 0.2s',
+                fontSize: '0.9rem',
               }}
               required
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem', color: '#D1D5DB' }}>
               Password
             </label>
             <input
@@ -151,12 +157,12 @@ const LoginPage = () => {
               style={{
                 width: '100%',
                 padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid var(--border-glass)',
-                color: 'var(--text-primary)',
+                borderRadius: '8px',
+                background: '#0A0A0E',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#fff',
                 outline: 'none',
-                transition: 'border-color 0.2s',
+                fontSize: '0.9rem',
               }}
               required
             />
@@ -165,33 +171,187 @@ const LoginPage = () => {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', padding: '0.85rem', marginTop: '0.5rem' }}
+            style={{ width: '100%', padding: '0.85rem', marginTop: '0.5rem', fontWeight: 700, fontSize: '0.95rem' }}
             disabled={loading}
           >
-            {loading ? 'Authenticating...' : <><FaSignInAlt /> Sign In</>}
+            {loading ? 'Authenticating...' : <><FaSignInAlt /> Log In to Portal</>}
           </button>
         </form>
 
-        <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-glass)', textAlign: 'center' }}>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '1rem' }}>
-            Don't have an account yet?
+        <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
+          <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginBottom: '0.75rem' }}>
+            Don't have an account?{' '}
+            <button
+              type="button"
+              onClick={() => setShowRoleModal(true)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#F59E0B',
+                fontWeight: 700,
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                padding: 0,
+                fontSize: '0.9rem',
+              }}
+            >
+              Sign up here
+            </button>
           </p>
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-            <Link to="/register/student" className="btn btn-secondary" style={{ padding: '0.5rem 0.9rem', fontSize: '0.8rem' }}>
-              <FaUserGraduate /> Student Signup
-            </Link>
-            <Link to="/register/trainer" className="btn btn-secondary" style={{ padding: '0.5rem 0.9rem', fontSize: '0.8rem' }}>
-              <FaDumbbell /> Trainer Signup
-            </Link>
-          </div>
         </div>
 
         <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <Link to="/" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+          <Link to="/" style={{ color: '#9CA3AF', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
             <FaArrowLeft size={11} /> Back to Homepage
           </Link>
         </div>
       </motion.div>
+
+      {/* Role-Selection Signup Modal */}
+      {showRoleModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(12px)',
+            zIndex: 2000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+        >
+          <div
+            style={{
+              background: '#13131A',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              borderRadius: '16px',
+              maxWidth: '480px',
+              width: '100%',
+              padding: '2rem',
+              position: 'relative',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
+              color: '#F3F4F6',
+            }}
+          >
+            <button
+              onClick={() => setShowRoleModal(false)}
+              style={{
+                position: 'absolute',
+                top: '1.25rem',
+                right: '1.25rem',
+                background: 'none',
+                border: 'none',
+                color: '#9CA3AF',
+                cursor: 'pointer',
+                padding: '6px',
+              }}
+            >
+              <FaTimes size={18} />
+            </button>
+
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '0.5rem', color: '#F3F4F6' }}>
+              Select Registration Type
+            </h3>
+            <p style={{ color: '#9CA3AF', fontSize: '0.88rem', marginBottom: '1.5rem' }}>
+              Choose whether you are enrolling as a club member or applying as a certified coach.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* Option 1: Member / Student Registration */}
+              <div
+                onClick={() => {
+                  setShowRoleModal(false);
+                  navigate('/membership-plans');
+                }}
+                style={{
+                  padding: '1.25rem',
+                  borderRadius: '12px',
+                  background: 'rgba(245, 158, 11, 0.08)',
+                  border: '1px solid rgba(245, 158, 11, 0.3)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  transition: 'background 0.2s',
+                }}
+              >
+                <div
+                  style={{
+                    width: '46px',
+                    height: '46px',
+                    borderRadius: '10px',
+                    background: 'rgba(245, 158, 11, 0.2)',
+                    color: '#F59E0B',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.25rem',
+                    flexShrink: 0,
+                  }}
+                >
+                  <FaUserGraduate />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', color: '#F3F4F6' }}>
+                    Member / Student Registration
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#9CA3AF', marginTop: '0.2rem' }}>
+                    Browse membership plans, pools, spa & start training
+                  </div>
+                </div>
+                <FaArrowRight color="#F59E0B" />
+              </div>
+
+              {/* Option 2: Trainer Application */}
+              <div
+                onClick={() => {
+                  setShowRoleModal(false);
+                  navigate('/trainer-register');
+                }}
+                style={{
+                  padding: '1.25rem',
+                  borderRadius: '12px',
+                  background: 'rgba(0, 229, 255, 0.06)',
+                  border: '1px solid rgba(0, 229, 255, 0.25)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  transition: 'background 0.2s',
+                }}
+              >
+                <div
+                  style={{
+                    width: '46px',
+                    height: '46px',
+                    borderRadius: '10px',
+                    background: 'rgba(0, 229, 255, 0.15)',
+                    color: '#00E5FF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.25rem',
+                    flexShrink: 0,
+                  }}
+                >
+                  <FaDumbbell />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', color: '#F3F4F6' }}>
+                    Trainer Application / Registration
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#9CA3AF', marginTop: '0.2rem' }}>
+                    Apply with CSCS / NASM / Olympic credentials
+                  </div>
+                </div>
+                <FaArrowRight color="#00E5FF" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

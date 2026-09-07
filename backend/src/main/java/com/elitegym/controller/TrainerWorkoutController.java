@@ -49,7 +49,7 @@ public class TrainerWorkoutController {
         return ResponseEntity.ok(ApiResponse.ok("Trainer requests retrieved", requests));
     }
 
-    @PatchMapping("/requests/{requestId}")
+    @RequestMapping(value = {"/requests/{requestId}", "/requests/{requestId}/status"}, method = {RequestMethod.PATCH, RequestMethod.PUT})
     public ResponseEntity<ApiResponse<TrainerRequestDto>> respondToRequest(
             @AuthenticationPrincipal UserPrincipal principal,
             @PathVariable Long requestId,

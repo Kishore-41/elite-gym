@@ -27,6 +27,13 @@ public class AuthController {
         return new ResponseEntity<>(ApiResponse.ok("Student registered successfully", response), HttpStatus.CREATED);
     }
 
+    @PostMapping("/register-with-plan")
+    public ResponseEntity<ApiResponse<AuthResponse>> registerWithPlan(@Valid @RequestBody PlanPurchaseRequest request) {
+        log.info("REST request to checkout and register with plan: {}", request.getEmail());
+        AuthResponse response = authService.registerWithPlan(request);
+        return new ResponseEntity<>(ApiResponse.ok("Enrolled and registered successfully", response), HttpStatus.CREATED);
+    }
+
     @PostMapping("/register/trainer")
     public ResponseEntity<ApiResponse<AuthResponse>> registerTrainer(@Valid @RequestBody TrainerRegisterRequest request) {
         log.info("REST request to register trainer: {}", request.getEmail());

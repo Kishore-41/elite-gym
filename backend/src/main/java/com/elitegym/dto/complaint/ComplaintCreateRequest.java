@@ -28,4 +28,16 @@ public class ComplaintCreateRequest {
 
     @Builder.Default
     private ComplaintPriority priority = ComplaintPriority.MEDIUM;
+
+    private String submitterName;
+    private String submitterEmail;
+
+    @Builder.Default
+    private String targetAudience = "OWNER_ONLY"; // OWNER_ONLY, GENERAL_MANAGER, HEAD_TRAINER
+
+    @Builder.Default
+    private boolean isAnonymous = false;
+
+    @Builder.Default
+    private java.util.List<String> attachmentUrls = new java.util.ArrayList<>();
 }

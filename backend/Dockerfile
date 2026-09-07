@@ -1,35 +1,35 @@
-# Stage 1: Build stage
-FROM maven:3.9-eclipse-temurin-17 AS builder
+# ==============================================================================
+# Multi-Stage Dockerfile for Elite Athletic Club Backend
+# ==============================================================================
+
+# Stage 1: Build Stage
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
 WORKDIR /app
 
-# Cache Maven dependencies
+# Copy project descriptor and download dependencies
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Copy application source code and package JAR
+# Copy application source code and compile production JAR (skipping unit tests)
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
-# Stage 2: Runtime stage
+# Stage 2: Runtime Stage
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Create a dedicated non-root user and group
-RUN addgroup -S elitegym && adduser -S elitegym -G elitegym
+# Ensure uploads directory structure exists for evidence and CMS media
+RUN mkdir -p uploads/evidence
 
-# Copy the built JAR from the builder stage
-COPY --from=builder /app/target/*.jar app.jar
+# Copy compiled JAR artifact from build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Change ownership of the runtime directory
-RUN chown -R elitegym:elitegym /app
-
-# Switch to non-root user
-USER elitegym
-
-# Expose Spring Boot default port
+# Expose backend application port
 EXPOSE 8080
 
-# Configure JVM memory settings and container-aware flags
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+# Environment defaults
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV PORT=8080
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+# Launch application
+ENTRYPOINT ["java", "-jar", "app.jar"]

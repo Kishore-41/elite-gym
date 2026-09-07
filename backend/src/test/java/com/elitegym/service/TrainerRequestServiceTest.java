@@ -38,6 +38,9 @@ class TrainerRequestServiceTest {
     @Mock
     private TrainerProfileRepository trainerProfileRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private TrainerRequestService trainerRequestService;
 

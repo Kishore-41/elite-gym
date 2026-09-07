@@ -29,6 +29,7 @@ public class TrainerRequestService {
     private final TrainerRequestRepository requestRepository;
     private final StudentProfileRepository studentProfileRepository;
     private final TrainerProfileRepository trainerProfileRepository;
+    private final NotificationService notificationService;
 
     // =========================================================================
     // 1. STUDENT OPERATIONS
@@ -115,6 +116,21 @@ public class TrainerRequestService {
 
         TrainerRequest saved = requestRepository.save(request);
         log.info("Trainer #{} responded to request #{} with status {}", trainer.getId(), requestId, response.getStatus());
+
+        try {
+            String studentUserId = String.valueOf(saved.getStudent().getUser().getId());
+            notificationService.createSystemNotification(
+                    saved.getStudent().getUser().getId(),
+                    "Trainer Request " + response.getStatus(),
+                    "Trainer " + trainer.getUser().getFullName() + " has " + response.getStatus().toString().toLowerCase() + " your request." +
+                            (response.getResponseNotes() != null ? " Notes: " + response.getResponseNotes() : ""),
+                    com.elitegym.enums.NotificationType.SYSTEM,
+                    "/dashboard"
+            );
+        } catch (Exception e) {
+            log.warn("Failed to dispatch trainer request notification: {}", e.getMessage());
+        }
+
         return mapToDto(saved);
     }
 

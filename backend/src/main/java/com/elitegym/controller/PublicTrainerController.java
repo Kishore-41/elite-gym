@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping({"/api/public/trainers", "/api/v1/public/trainers"})
+@RequestMapping({"/api/trainers", "/api/public/trainers", "/api/v1/public/trainers"})
 @RequiredArgsConstructor
 public class PublicTrainerController {
 

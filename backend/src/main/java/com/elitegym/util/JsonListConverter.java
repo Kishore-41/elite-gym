@@ -37,8 +37,23 @@ public class JsonListConverter implements AttributeConverter<List<String>, Strin
         }
         try {
             return objectMapper.readValue(dbData, new TypeReference<List<String>>() {});
-        } catch (IOException e) {
-            log.error("Error deserializing JSON string to list: {}", dbData, e);
+        } catch (Exception e) {
+            log.warn("Could not parse JSON list directly: {}. Attempting fallback parsing.", dbData);
+            try {
+                String cleaned = dbData.replaceAll("[\\[\\]\"]", "").trim();
+                if (!cleaned.isEmpty()) {
+                    List<String> list = new ArrayList<>();
+                    for (String part : cleaned.split(",")) {
+                        String trimmed = part.trim();
+                        if (!trimmed.isEmpty()) {
+                            list.add(trimmed);
+                        }
+                    }
+                    return list;
+                }
+            } catch (Exception ex) {
+                log.error("Fallback parsing failed for data: {}", dbData, ex);
+            }
             return new ArrayList<>();
         }
     }

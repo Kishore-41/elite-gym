@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping({"/api/public/membership-plans", "/api/memberships/plans"})
+@RequestMapping({"/api/plans", "/api/public/plans", "/api/public/membership-plans", "/api/memberships/plans"})
 @RequiredArgsConstructor
 public class PublicMembershipController {
 

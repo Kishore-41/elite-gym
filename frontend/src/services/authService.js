@@ -7,6 +7,12 @@ export const authService = {
     return response.data;
   },
 
+  // Atomic Registration & Plan Checkout
+  registerWithPlan: async (planPurchaseData) => {
+    const response = await api.post('/auth/register-with-plan', planPurchaseData);
+    return response.data;
+  },
+
   // Trainer Registration
   registerTrainer: async (trainerData) => {
     const response = await api.post('/auth/register/trainer', trainerData);

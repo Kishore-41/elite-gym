@@ -11,6 +11,11 @@ import EmptyState from '../../components/common/EmptyState';
 import Modal from '../../components/common/Modal';
 
 const CATEGORY_MAP = {
+  FACILITY_MAINTENANCE: { label: 'Facility Maintenance', Icon: FaBuilding, color: '#3b82f6' },
+  EQUIPMENT_ISSUE: { label: 'Equipment Issue', Icon: FaTools, color: '#f59e0b' },
+  STAFF_BEHAVIOR: { label: 'Staff Behavior', Icon: FaUserTie, color: '#ec4899' },
+  TRAINER_MISCONDUCT: { label: 'Trainer Misconduct', Icon: FaUserTie, color: '#ef4444' },
+  BILLING_ISSUE: { label: 'Billing Issue', Icon: FaCreditCard, color: '#a855f7' },
   EQUIPMENT: { label: 'Equipment', Icon: FaTools, color: '#f59e0b' },
   FACILITY: { label: 'Facility', Icon: FaBuilding, color: '#3b82f6' },
   TRAINER: { label: 'Trainer', Icon: FaUserTie, color: '#00e5ff' },
@@ -26,9 +31,12 @@ const PRIORITY_MAP = {
 };
 
 const STATUS_MAP = {
+  SUBMITTED: { label: 'Submitted', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)', Icon: FaClock },
+  IN_REVIEW: { label: 'In Review', color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.15)', Icon: FaClock },
   OPEN: { label: 'Open', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)', Icon: FaClock },
   IN_PROGRESS: { label: 'In Progress', color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.15)', Icon: FaClock },
   RESOLVED: { label: 'Resolved', color: '#22c55e', bg: 'rgba(34, 197, 94, 0.15)', Icon: FaCheckCircle },
+  REJECTED: { label: 'Rejected', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.15)', Icon: FaTimesCircle },
   CLOSED: { label: 'Closed', color: '#9ca3af', bg: 'rgba(156, 163, 175, 0.15)', Icon: FaTimesCircle },
 };
 
@@ -70,8 +78,10 @@ const ComplaintsPage = () => {
   const [form, setForm] = useState({
     subject: '',
     description: '',
-    category: 'EQUIPMENT',
+    category: 'FACILITY_MAINTENANCE',
     priority: 'MEDIUM',
+    targetAudience: 'OWNER_ONLY',
+    isAnonymous: false,
   });
 
   const loadComplaints = async () => {
@@ -105,7 +115,7 @@ const ComplaintsPage = () => {
       const res = await complaintService.createComplaint(form);
       setSuccessMsg(res.message || 'Support ticket submitted successfully!');
       setIsCreateModalOpen(false);
-      setForm({ subject: '', description: '', category: 'EQUIPMENT', priority: 'MEDIUM' });
+      setForm({ subject: '', description: '', category: 'FACILITY_MAINTENANCE', priority: 'MEDIUM', targetAudience: 'OWNER_ONLY', isAnonymous: false });
       await loadComplaints();
     } catch (err) {
       console.error('Failed to create complaint:', err);
@@ -368,6 +378,29 @@ const ComplaintsPage = () => {
               />
             </div>
 
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                Target Authority / Escalation Layer *
+              </label>
+              <select
+                value={form.targetAudience}
+                onChange={(e) => setForm({ ...form, targetAudience: e.target.value })}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: '#161b22',
+                  border: '1px solid var(--border-glass)',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--text-primary)',
+                  fontSize: '0.9rem',
+                }}
+              >
+                <option value="OWNER_ONLY">Club Owner / Founder Direct (Strictly Confidential)</option>
+                <option value="GENERAL_MANAGER">General Manager (Madurai Operations)</option>
+                <option value="HEAD_TRAINER">Head Fitness Director (Coaching & Discipline)</option>
+              </select>
+            </div>
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
@@ -386,11 +419,12 @@ const ComplaintsPage = () => {
                     fontSize: '0.9rem',
                   }}
                 >
-                  <option value="EQUIPMENT">Equipment</option>
-                  <option value="FACILITY">Facility & Cleanliness</option>
-                  <option value="TRAINER">Trainer / Staff</option>
-                  <option value="BILLING">Billing & Payments</option>
-                  <option value="OTHER">Other</option>
+                  <option value="FACILITY_MAINTENANCE">Facility Maintenance & Pool</option>
+                  <option value="EQUIPMENT_ISSUE">Equipment & Barbell Issue</option>
+                  <option value="STAFF_BEHAVIOR">Staff & Front Desk Behavior</option>
+                  <option value="TRAINER_MISCONDUCT">Trainer & Coach Misconduct</option>
+                  <option value="BILLING_ISSUE">Billing & Payment Issue</option>
+                  <option value="OTHER">Other Grievance</option>
                 </select>
               </div>
 
@@ -417,6 +451,20 @@ const ComplaintsPage = () => {
                   <option value="CRITICAL">Critical</option>
                 </select>
               </div>
+            </div>
+
+            <div style={{ marginBottom: '1rem', background: form.isAnonymous ? 'rgba(255, 107, 0, 0.1)' : 'rgba(255,255,255,0.02)', border: form.isAnonymous ? '1px solid #FF8800' : '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={form.isAnonymous}
+                  onChange={(e) => setForm({ ...form, isAnonymous: e.target.checked })}
+                  style={{ width: '16px', height: '16px', accentColor: '#FF6B00' }}
+                />
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: form.isAnonymous ? '#FF8800' : 'var(--text-primary)' }}>
+                  Submit Anonymously (Zero-Leak Guarantee)
+                </span>
+              </label>
             </div>
 
             <div style={{ marginBottom: '1.25rem' }}>

@@ -12,6 +12,11 @@ import EmptyState from '../../components/common/EmptyState';
 import Modal from '../../components/common/Modal';
 
 const CATEGORY_MAP = {
+  FACILITY_MAINTENANCE: { label: 'Facility Maintenance', Icon: FaBuilding, color: '#3b82f6' },
+  EQUIPMENT_ISSUE: { label: 'Equipment Issue', Icon: FaTools, color: '#f59e0b' },
+  STAFF_BEHAVIOR: { label: 'Staff Behavior', Icon: FaUserTie, color: '#ec4899' },
+  TRAINER_MISCONDUCT: { label: 'Trainer Misconduct', Icon: FaUserTie, color: '#ef4444' },
+  BILLING_ISSUE: { label: 'Billing Issue', Icon: FaCreditCard, color: '#a855f7' },
   EQUIPMENT: { label: 'Equipment', Icon: FaTools, color: '#f59e0b' },
   FACILITY: { label: 'Facility', Icon: FaBuilding, color: '#3b82f6' },
   TRAINER: { label: 'Trainer', Icon: FaUserTie, color: '#00e5ff' },
@@ -27,9 +32,12 @@ const PRIORITY_MAP = {
 };
 
 const STATUS_MAP = {
+  SUBMITTED: { label: 'Submitted', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)', Icon: FaClock },
+  IN_REVIEW: { label: 'In Review', color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.15)', Icon: FaClock },
   OPEN: { label: 'Open', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)', Icon: FaClock },
   IN_PROGRESS: { label: 'In Progress', color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.15)', Icon: FaClock },
   RESOLVED: { label: 'Resolved', color: '#22c55e', bg: 'rgba(34, 197, 94, 0.15)', Icon: FaCheckCircle },
+  REJECTED: { label: 'Rejected', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.15)', Icon: FaTimesCircle },
   CLOSED: { label: 'Closed', color: '#9ca3af', bg: 'rgba(156, 163, 175, 0.15)', Icon: FaTimesCircle },
 };
 
@@ -242,10 +250,11 @@ const ManageComplaints = () => {
                 }}
               >
                 <option value="ALL">All Categories</option>
-                <option value="EQUIPMENT">Equipment</option>
-                <option value="FACILITY">Facility</option>
-                <option value="TRAINER">Trainer</option>
-                <option value="BILLING">Billing</option>
+                <option value="FACILITY_MAINTENANCE">Facility Maintenance</option>
+                <option value="EQUIPMENT_ISSUE">Equipment Issue</option>
+                <option value="STAFF_BEHAVIOR">Staff Behavior</option>
+                <option value="TRAINER_MISCONDUCT">Trainer Misconduct</option>
+                <option value="BILLING_ISSUE">Billing Issue</option>
                 <option value="OTHER">Other</option>
               </select>
             </div>
@@ -374,15 +383,48 @@ const ManageComplaints = () => {
         >
           <form onSubmit={handleRespondSubmit} style={{ padding: '0.5rem 0' }}>
             <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '1rem', borderRadius: '10px', marginBottom: '1.25rem' }}>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>
-                Member: <strong>{selectedTicket.studentName}</strong> ({selectedTicket.studentEmail})
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  {selectedTicket.isAnonymous ? (
+                    <span style={{ color: '#FF8800', fontWeight: 800, background: 'rgba(255, 107, 0, 0.15)', padding: '2px 8px', borderRadius: '12px' }}>
+                      Zero-Leak Anonymous Member ({selectedTicket.submitterName || 'ANON'})
+                    </span>
+                  ) : (
+                    <span>
+                      Member: <strong>{selectedTicket.submitterName || selectedTicket.studentName || 'Member'}</strong> ({selectedTicket.submitterEmail || selectedTicket.studentEmail || 'Protected'})
+                    </span>
+                  )}
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#00E5FF', background: 'rgba(0, 229, 255, 0.1)', padding: '2px 8px', borderRadius: '12px' }}>
+                  Target: {selectedTicket.targetAudience || 'OWNER_ONLY'}
+                </span>
               </div>
+
               <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
                 {selectedTicket.subject}
               </div>
-              <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '0.5rem' }}>
                 {selectedTicket.description}
               </div>
+
+              {selectedTicket.attachmentUrls && selectedTicket.attachmentUrls.length > 0 && (
+                <div style={{ marginTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.5rem' }}>
+                  <div style={{ fontSize: '0.76rem', color: '#94A3B8', fontWeight: 700, marginBottom: '0.25rem' }}>Supporting Evidence:</div>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {selectedTicket.attachmentUrls.map((url, i) => (
+                      <a
+                        key={i}
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ fontSize: '0.75rem', color: '#FF8800', background: 'rgba(255,107,0,0.1)', padding: '2px 8px', borderRadius: '6px', textDecoration: 'none' }}
+                      >
+                        Evidence #{i + 1}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
@@ -402,9 +444,11 @@ const ManageComplaints = () => {
                   fontSize: '0.9rem',
                 }}
               >
-                <option value="OPEN">Open</option>
+                <option value="SUBMITTED">Submitted</option>
+                <option value="IN_REVIEW">In Review</option>
                 <option value="IN_PROGRESS">In Progress</option>
-                <option value="RESOLVED">Resolved</option>
+                <option value="RESOLVED">Resolved (Dispatches Resolution Email)</option>
+                <option value="REJECTED">Rejected</option>
                 <option value="CLOSED">Closed</option>
               </select>
             </div>

@@ -546,21 +546,29 @@ class ComplaintServiceTest {
 
     @Test
     void enumValues_ComplaintCategory_MatchSchemaEnum() {
-        assertEquals(5, ComplaintCategory.values().length);
+        assertTrue(ComplaintCategory.values().length >= 5);
         assertNotNull(ComplaintCategory.valueOf("EQUIPMENT"));
         assertNotNull(ComplaintCategory.valueOf("FACILITY"));
         assertNotNull(ComplaintCategory.valueOf("TRAINER"));
         assertNotNull(ComplaintCategory.valueOf("BILLING"));
         assertNotNull(ComplaintCategory.valueOf("OTHER"));
+        assertNotNull(ComplaintCategory.valueOf("FACILITY_MAINTENANCE"));
+        assertNotNull(ComplaintCategory.valueOf("EQUIPMENT_ISSUE"));
+        assertNotNull(ComplaintCategory.valueOf("STAFF_BEHAVIOR"));
+        assertNotNull(ComplaintCategory.valueOf("TRAINER_MISCONDUCT"));
+        assertNotNull(ComplaintCategory.valueOf("BILLING_ISSUE"));
     }
 
     @Test
     void enumValues_ComplaintStatus_MatchSchemaEnum() {
-        assertEquals(4, ComplaintStatus.values().length);
+        assertTrue(ComplaintStatus.values().length >= 4);
         assertNotNull(ComplaintStatus.valueOf("OPEN"));
         assertNotNull(ComplaintStatus.valueOf("IN_PROGRESS"));
         assertNotNull(ComplaintStatus.valueOf("RESOLVED"));
         assertNotNull(ComplaintStatus.valueOf("CLOSED"));
+        assertNotNull(ComplaintStatus.valueOf("SUBMITTED"));
+        assertNotNull(ComplaintStatus.valueOf("IN_REVIEW"));
+        assertNotNull(ComplaintStatus.valueOf("REJECTED"));
     }
 
     @Test

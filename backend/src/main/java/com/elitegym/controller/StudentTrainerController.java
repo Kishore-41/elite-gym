@@ -39,13 +39,13 @@ public class StudentTrainerController {
         return ResponseEntity.ok(ApiResponse.ok("Trainer requests retrieved", requests));
     }
 
-    @PostMapping("/trainer-requests")
+    @PostMapping({"/trainer-requests", "/trainer-consultation"})
     public ResponseEntity<ApiResponse<TrainerRequestDto>> createTrainerRequest(
             @AuthenticationPrincipal UserPrincipal principal,
             @Valid @RequestBody TrainerRequestCreateRequest request) {
-        log.info("Student #{} creating trainer request to trainer #{}", principal.getId(), request.getTrainerId());
+        log.info("Student #{} creating trainer request/consultation to trainer #{}", principal.getId(), request.getTrainerId());
         TrainerRequestDto created = trainerRequestService.createRequest(principal, request);
-        return new ResponseEntity<>(ApiResponse.ok("Trainer request submitted successfully", created), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiResponse.ok("Trainer consultation request submitted successfully", created), HttpStatus.CREATED);
     }
 
     // =============== Workout Plans ===============

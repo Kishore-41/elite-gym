@@ -58,6 +58,14 @@ export const AuthProvider = ({ children }) => {
     throw new Error(res.message || 'Registration failed');
   };
 
+  const registerWithPlan = async (purchaseData) => {
+    const res = await authService.registerWithPlan(purchaseData);
+    if (res.success && res.data) {
+      return handleAuthSuccess(res.data);
+    }
+    throw new Error(res.message || 'Plan enrollment failed');
+  };
+
   const registerTrainer = async (trainerData) => {
     const res = await authService.registerTrainer(trainerData);
     if (res.success && res.data) {
@@ -82,6 +90,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     registerStudent,
+    registerWithPlan,
     registerTrainer,
     logout,
   };

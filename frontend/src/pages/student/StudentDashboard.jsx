@@ -416,6 +416,26 @@ const StudentDashboard = () => {
             </Link>
 
             <Link
+              to="/student/amenity-bookings"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.6rem',
+                padding: '0.85rem 1rem',
+                borderRadius: '12px',
+                background: 'rgba(0, 229, 255, 0.05)',
+                border: '1px solid rgba(0, 229, 255, 0.2)',
+                color: '#00E5FF',
+                fontSize: '0.875rem',
+                fontWeight: 700,
+                textDecoration: 'none',
+                gridColumn: 'span 2',
+              }}
+            >
+              🏊 Book Pool, Sauna & Strength Amenities →
+            </Link>
+
+            <Link
               to="/student/complaints"
               style={{
                 display: 'flex',

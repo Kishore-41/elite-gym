@@ -12,6 +12,9 @@ import com.elitegym.exception.BadRequestException;
 import com.elitegym.repository.StudentProfileRepository;
 import com.elitegym.repository.TrainerProfileRepository;
 import com.elitegym.repository.UserRepository;
+import com.elitegym.repository.MembershipPlanRepository;
+import com.elitegym.repository.StudentMembershipRepository;
+import com.elitegym.repository.PaymentRepository;
 import com.elitegym.security.JwtTokenProvider;
 import com.elitegym.security.UserPrincipal;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,18 @@ class AuthServiceTest {
 
     @Mock
     private TrainerProfileRepository trainerProfileRepository;
+
+    @Mock
+    private MembershipPlanRepository planRepository;
+
+    @Mock
+    private StudentMembershipRepository membershipRepository;
+
+    @Mock
+    private PaymentRepository paymentRepository;
+
+    @Mock
+    private NotificationService notificationService;
 
     @Mock
     private PasswordEncoder passwordEncoder;

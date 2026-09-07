@@ -123,10 +123,13 @@ const AdminDashboard = () => {
         </div>
 
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <Link to="/admin/cms" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
+            <FaUserShield /> Dynamic CMS Portal
+          </Link>
           <Link to="/admin/memberships" className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
             <FaIdCard /> Plans & Members
           </Link>
-          <Link to="/admin/payments" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
+          <Link to="/admin/payments" className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
             <FaFileInvoiceDollar /> Financial Ledger
           </Link>
         </div>

@@ -5,6 +5,7 @@ import com.elitegym.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -46,15 +47,31 @@ public class SecurityConfig {
             .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                // Public authentication endpoints
-                .requestMatchers(
-                    "/api/auth/**",
-                    "/api/v1/auth/**",
+                .requestMatchers(HttpMethod.GET,
+                    "/", "/index.html", "/static/**", "/assets/**",
+                    "/uploads/**",
+                    "/api/plans/**",
+                    "/api/facilities/**",
+                    "/api/trainers/**",
+                    "/api/gallery/**",
+                    "/api/achievements/**",
+                    "/api/testimonials/**",
+                    "/api/schedule/**",
+                    "/api/faq/**",
+                    "/api/guest-pass/**",
+                    "/api/complaints/**",
                     "/api/public/**",
                     "/api/v1/public/**",
                     "/error"
                 ).permitAll()
-                // All other endpoints require authentication
+                .requestMatchers(HttpMethod.POST,
+                    "/api/auth/**",
+                    "/api/guest-pass/**",
+                    "/api/complaints/**"
+                ).permitAll()
+                .requestMatchers("/api/student/**").hasRole("STUDENT")
+                .requestMatchers("/api/trainer/**").hasRole("TRAINER")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             );
 

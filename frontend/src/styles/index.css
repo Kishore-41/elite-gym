@@ -1,25 +1,27 @@
 /* ==============================================================================
    ELITE GYM - DESIGN SYSTEM & TOKENS
-   Modern Dark Cyber Gym Theme with Glassmorphism and Neon Accents
+   Modern Dark Cyber Athletic Theme with Glassmorphism & Energetic Amber Accents
    ============================================================================== */
 
 :root {
   /* Color Palette */
   --bg-main: #090c10;
   --bg-surface: #0e131f;
-  --bg-card: rgba(14, 19, 31, 0.75);
-  --bg-card-hover: rgba(22, 29, 46, 0.85);
+  --bg-card: rgba(18, 23, 34, 0.85);
+  --bg-card-hover: rgba(26, 34, 51, 0.95);
   --bg-glass: rgba(255, 255, 255, 0.03);
   --bg-glass-strong: rgba(255, 255, 255, 0.07);
 
   --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-bright: rgba(255, 255, 255, 0.15);
-  --border-accent: rgba(255, 107, 0, 0.3);
+  --border-glass-bright: rgba(255, 255, 255, 0.18);
+  --border-accent: rgba(255, 107, 0, 0.35);
 
   /* Accents */
   --accent-orange: #ff6b00;
-  --accent-orange-hover: #ff8533;
-  --accent-orange-glow: rgba(255, 107, 0, 0.25);
+  --accent-orange-hover: #ff8800;
+  --accent-orange-glow: rgba(255, 107, 0, 0.3);
+  --gradient-amber: linear-gradient(135deg, #ff6b00 0%, #ff8800 100%);
+  --gradient-amber-subtle: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 136, 0, 0.05) 100%);
 
   --accent-cyan: #00e5ff;
   --accent-cyan-glow: rgba(0, 229, 255, 0.2);
@@ -31,15 +33,16 @@
   --accent-red-glow: rgba(255, 23, 68, 0.2);
 
   /* Typography */
-  --text-primary: #f0f6fc;
-  --text-secondary: #8b949e;
-  --text-muted: #6e7681;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-heading: 'Outfit', var(--font-sans);
 
   /* Elevation & Shadows */
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 20px 40px -12px rgba(0, 0, 0, 0.75), 0 0 20px rgba(255, 107, 0, 0.15);
   --shadow-glow: 0 0 25px var(--accent-orange-glow);
   --shadow-cyan-glow: 0 0 25px var(--accent-cyan-glow);
 
@@ -70,7 +73,8 @@ html, body {
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -79,11 +83,11 @@ html, body {
 body::before {
   content: '';
   position: fixed;
-  top: -200px;
+  top: -220px;
   left: 20%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, rgba(9, 12, 16, 0) 70%);
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(255, 107, 0, 0.09) 0%, rgba(9, 12, 16, 0) 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -91,11 +95,11 @@ body::before {
 body::after {
   content: '';
   position: fixed;
-  bottom: -200px;
+  bottom: -220px;
   right: 15%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, rgba(9, 12, 16, 0) 70%);
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.06) 0%, rgba(9, 12, 16, 0) 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -113,7 +117,8 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--text-primary);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
 }
 
 a {
@@ -126,7 +131,7 @@ button, input, select, textarea {
   font-size: inherit;
 }
 
-/* Glassmorphism Utilities */
+/* Glassmorphism & Slate Card Utilities */
 .glass-panel {
   background: var(--bg-card);
   backdrop-filter: blur(16px);
@@ -138,16 +143,25 @@ button, input, select, textarea {
 }
 
 .glass-panel:hover {
-  border-color: var(--border-glass-bright);
+  border-color: rgba(255, 107, 0, 0.4);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .glass-card {
-  padding: 1.5rem;
+  padding: 1.75rem;
   background: var(--bg-card);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
+  transition: all var(--transition-normal);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 107, 0, 0.45);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
 }
 
 /* Button Utilities */
@@ -157,7 +171,7 @@ button, input, select, textarea {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
@@ -166,15 +180,15 @@ button, input, select, textarea {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-orange), #e05e00);
+  background: var(--gradient-amber);
   color: #ffffff;
-  box-shadow: 0 4px 14px var(--accent-orange-glow);
+  box-shadow: 0 4px 16px var(--accent-orange-glow);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--accent-orange-hover), var(--accent-orange));
+  background: linear-gradient(135deg, #ff7a1a 0%, #ff941a 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+  box-shadow: 0 6px 22px rgba(255, 107, 0, 0.45);
 }
 
 .btn-secondary {
@@ -189,7 +203,7 @@ button, input, select, textarea {
   transform: translateY(-2px);
 }
 
-/* Badge Utilities */
+/* Badge & Chip Utilities */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -197,7 +211,7 @@ button, input, select, textarea {
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -205,7 +219,7 @@ button, input, select, textarea {
 .badge-orange {
   background: rgba(255, 107, 0, 0.15);
   color: var(--accent-orange);
-  border: 1px solid rgba(255, 107, 0, 0.3);
+  border: 1px solid rgba(255, 107, 0, 0.35);
 }
 
 .badge-cyan {
@@ -220,10 +234,46 @@ button, input, select, textarea {
   border: 1px solid rgba(0, 230, 118, 0.3);
 }
 
+.amenity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+.amenity-chip:hover {
+  background: rgba(255, 107, 0, 0.12);
+  border-color: rgba(255, 107, 0, 0.3);
+  color: #ff8800;
+}
+
 /* Layout Utilities */
 .container {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090c10;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff6b00;
 }
